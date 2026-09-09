@@ -1,0 +1,8 @@
+{
+  "name": "Vee and Phil Invitation",
+  "description": "An elegant, premium dark-mode wedding invitation and RSVP portal for Venessa and Philemon\u0027s wedding, featuring schedule, dress code, maps, and e-card generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

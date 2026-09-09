@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "Rsvp": {
+      "title": "Rsvp",
+      "description": "Wedding RSVP guest submission",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "willAttend": { "type": "string" },
+        "adultsCount": { "type": "number" },
+        "submittedAt": { "type": "string" },
+        "eCardCode": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "fullName", "phoneNumber", "willAttend", "adultsCount", "submittedAt"]
+    },
+    "GalleryPhoto": {
+      "title": "GalleryPhoto",
+      "description": "Wedding photo gallery upload",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "caption": { "type": "string" },
+        "uploaderName": { "type": "string" },
+        "deviceInfo": { "type": "string" },
+        "likes": { "type": "number" },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["id", "url", "caption"]
+    }
+  },
+  "firestore": {
+    "/rsvps/{rsvpId}": {
+      "schema": { "$ref": "#/entities/Rsvp" },
+      "description": "Guest RSVP records"
+    },
+    "/gallery/{photoId}": {
+      "schema": { "$ref": "#/entities/GalleryPhoto" },
+      "description": "Photo gallery items"
+    }
+  }
+}

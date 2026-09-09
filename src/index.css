@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Italiana&family=Inter:wght@300;400;500;600;700&family=Pinyon+Script&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Italiana", serif;
+  --font-script: "Pinyon Script", cursive;
+  
+  --color-maroon-50: #faf2f3;
+  --color-maroon-100: #f3e2e5;
+  --color-maroon-200: #eacacc;
+  --color-maroon-300: #dbabae;
+  --color-maroon-400: #c57e84;
+  --color-maroon-500: #aa5159;
+  --color-maroon-600: #8f3b43;
+  --color-maroon-700: #742b31;
+  --color-maroon-800: #5a1d22;
+  --color-maroon-850: #450e12;
+  --color-maroon-900: #33070b;
+  --color-maroon-950: #1c0205;
+
+  --color-navy-50: #f0f4fa;
+  --color-navy-100: #e6edf7;
+  --color-navy-200: #c5d4ec;
+  --color-navy-300: #9cb5dc;
+  --color-navy-400: #6a90c6;
+  --color-navy-500: #3b6aa8;
+  --color-navy-600: #1e4a87;
+  --color-navy-700: #0f356e;
+  --color-navy-800: #0a254e;
+  --color-navy-850: #081b3a;
+  --color-navy-900: #002147;
+  --color-navy-950: #040d1c;
+
+  --color-gold-50: #fdfbf7;
+  --color-gold-100: #f9f3e5;
+  --color-gold-200: #f2e3be;
+  --color-gold-300: #e8ce8f;
+  --color-gold-400: #ddb860;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b8860b;
+  --color-gold-700: #8c5c15;
+  --color-gold-800: #6b430c;
+  --color-gold-900: #4a2d06;
+  
+  --color-emerald-50: #f0fdf4;
+  --color-emerald-100: #dcfce7;
+  --color-emerald-200: #bbf7d0;
+  --color-emerald-300: #86efac;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
+}

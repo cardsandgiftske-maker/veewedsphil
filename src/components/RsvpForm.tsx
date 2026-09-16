@@ -133,7 +133,7 @@ export default function RsvpForm() {
             <h2 className="text-3xl md:text-5xl font-display font-light text-stone-900 mt-2 mb-4">Confirm Attendance</h2>
             <div className="w-28 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto" />
             <p className="text-stone-700 text-sm md:text-base mt-4 max-w-xl mx-auto italic font-serif leading-relaxed">
-              Kindly register your clearance by 10th August to receive your official personalized Digital Wedding Pass and QR entry code.
+              Kindly register your clearance by 10th October to receive your official personalized Digital Wedding Pass and QR entry code.
             </p>
           </div>
 

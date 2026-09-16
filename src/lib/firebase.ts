@@ -59,47 +59,28 @@ const COLLECTION_NAME = 'rsvps';
 
 // LOCAL STORAGE FALLBACK HELPERS
 const getLocalRsvps = (): RsvpGuest[] => {
-  return JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+  try {
+    const raw: RsvpGuest[] = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+    // Clean out any legacy seed entries
+    const cleaned = raw.filter(
+      (item) =>
+        !item.id?.startsWith('seed-') &&
+        item.fullName !== 'Christopher Mwangi' &&
+        item.fullName !== 'Mercy Wanjiku' &&
+        item.fullName !== 'David Omondi'
+    );
+    if (cleaned.length !== raw.length) {
+      localStorage.setItem('wedding_rsvps', JSON.stringify(cleaned));
+    }
+    return cleaned;
+  } catch {
+    return [];
+  }
 };
 
 const saveLocalRsvps = (rsvps: RsvpGuest[]) => {
   localStorage.setItem('wedding_rsvps', JSON.stringify(rsvps));
   window.dispatchEvent(new Event('rsvp_database_updated'));
-};
-
-const getSeedData = (): RsvpGuest[] => {
-  return [
-    {
-      id: 'seed-1',
-      fullName: 'Christopher Mwangi',
-      phoneNumber: '+254 712 345 678',
-      willAttend: 'yes',
-      adultsCount: 2,
-      submittedAt: '2026-07-15T12:30:00.000Z',
-      eCardCode: 'CJ-26-X83A',
-      notes: 'Looking forward to delivering the vote of thanks!'
-    },
-    {
-      id: 'seed-2',
-      fullName: 'Mercy Wanjiku',
-      phoneNumber: '+254 722 987 654',
-      willAttend: 'yes',
-      adultsCount: 1,
-      submittedAt: '2026-07-16T09:15:00.000Z',
-      eCardCode: 'CJ-26-K92B',
-      notes: 'Gluten-free / vegetarian dietary preference please.'
-    },
-    {
-      id: 'seed-3',
-      fullName: 'David Omondi',
-      phoneNumber: '+254 733 444 555',
-      willAttend: 'no',
-      adultsCount: 0,
-      submittedAt: '2026-07-18T16:45:00.000Z',
-      eCardCode: 'CJ-26-R15C',
-      notes: 'Sending love! Traveling out of the country on that weekend.'
-    }
-  ];
 };
 
 // EXPORTED CORE API FUNCTIONS (SFC / transparent dual database logic)
@@ -127,7 +108,7 @@ export async function saveRsvp(rsvp: RsvpGuest): Promise<void> {
 }
 
 /**
- * Fetch all RSVPs. Returns seed data if empty and saves it.
+ * Fetch all RSVPs.
  */
 export async function getRsvps(): Promise<RsvpGuest[]> {
   const db = getDb();
@@ -136,18 +117,22 @@ export async function getRsvps(): Promise<RsvpGuest[]> {
       const q = query(collection(db, COLLECTION_NAME), orderBy('submittedAt', 'desc'));
       const querySnapshot = await getDocs(q);
       const rsvps: RsvpGuest[] = [];
-      querySnapshot.forEach((doc) => {
-        rsvps.push(doc.data() as RsvpGuest);
-      });
-      
-      // If Firestore database is brand new and completely empty, auto-seed it
-      if (rsvps.length === 0) {
-        const seed = getSeedData();
-        for (const item of seed) {
-          await setDoc(doc(db, COLLECTION_NAME, item.id), item);
+      querySnapshot.forEach((docSnap) => {
+        const item = docSnap.data() as RsvpGuest;
+        const isSeed =
+          docSnap.id.startsWith('seed-') ||
+          item.id?.startsWith('seed-') ||
+          item.fullName === 'Christopher Mwangi' ||
+          item.fullName === 'Mercy Wanjiku' ||
+          item.fullName === 'David Omondi';
+
+        if (isSeed) {
+          // Asynchronously delete any stray seed doc from Firestore
+          deleteDoc(doc(db, COLLECTION_NAME, docSnap.id)).catch(() => {});
+        } else {
           rsvps.push(item);
         }
-      }
+      });
       return rsvps;
     } catch (error) {
       console.warn('Failed to fetch from Firebase, reading from localStorage instead:', error);
@@ -155,11 +140,7 @@ export async function getRsvps(): Promise<RsvpGuest[]> {
   }
   
   // Local storage fallback
-  let local = getLocalRsvps();
-  if (local.length === 0) {
-    local = getSeedData();
-    saveLocalRsvps(local);
-  }
+  const local = getLocalRsvps();
   return local.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
 }
 
@@ -224,15 +205,22 @@ export function subscribeToRsvps(onUpdate: (rsvps: RsvpGuest[]) => void): () => 
       const q = query(collection(db, COLLECTION_NAME), orderBy('submittedAt', 'desc'));
       return onSnapshot(q, (snapshot) => {
         const rsvps: RsvpGuest[] = [];
-        snapshot.forEach((doc) => {
-          rsvps.push(doc.data() as RsvpGuest);
+        snapshot.forEach((docSnap) => {
+          const item = docSnap.data() as RsvpGuest;
+          const isSeed =
+            docSnap.id.startsWith('seed-') ||
+            item.id?.startsWith('seed-') ||
+            item.fullName === 'Christopher Mwangi' ||
+            item.fullName === 'Mercy Wanjiku' ||
+            item.fullName === 'David Omondi';
+
+          if (isSeed) {
+            deleteDoc(doc(db, COLLECTION_NAME, docSnap.id)).catch(() => {});
+          } else {
+            rsvps.push(item);
+          }
         });
-        if (rsvps.length > 0) {
-          onUpdate(rsvps);
-        } else {
-          // If Firestore exists but is empty, trigger getRsvps to seed it
-          getRsvps().then(onUpdate);
-        }
+        onUpdate(rsvps);
       }, (error) => {
         console.warn('Firebase snapshot subscription failed:', error);
       });

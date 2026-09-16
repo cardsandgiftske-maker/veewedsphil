@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, MapPin, Shirt, Sparkles, Mail, Camera, ChevronUp, Clock, Gift } from 'lucide-react';
+import { Calendar, MapPin, Shirt, Sparkles, Mail, Camera, ChevronUp, Clock, Gift, Menu, X } from 'lucide-react';
 import Hero from './components/Hero';
 import Countdown from './components/Countdown';
 import Program from './components/Program';
@@ -18,6 +18,7 @@ export default function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isEnvelopeOpened, setIsEnvelopeOpened] = useState(false);
   const [shouldPlayMusic, setShouldPlayMusic] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!isEnvelopeOpened) {
@@ -65,8 +66,15 @@ export default function App() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerOffset = 90;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth'
+      });
     }
+    setIsMobileMenuOpen(false);
   };
 
   const navItems = [
@@ -146,16 +154,123 @@ export default function App() {
             })}
           </nav>
 
-          {/* Mobile Menu / Date Indicator */}
-          <div className="md:hidden text-[10px] font-mono text-amber-200 font-bold tracking-wider uppercase bg-[#002147] px-3 py-1 rounded-full border border-[#D4AF37]/50 shadow-xs flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-            PASSPORT • 25.10.2026
+          {/* Mobile Right Controls: Quick RSVP button + Hamburger Toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => scrollToSection('rsvp-section')}
+              className="text-[11px] font-mono font-bold uppercase tracking-wider bg-[#002147] hover:bg-[#081b3a] text-amber-200 border border-[#D4AF37]/80 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1 cursor-pointer active:scale-95 transition-all"
+            >
+              <Mail className="w-3 h-3 text-[#D4AF37]" />
+              <span>RSVP</span>
+            </button>
+
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200/80 border border-[#D4AF37]/40 text-[#002147] transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 text-[#8B1E3F]" />
+              ) : (
+                <Menu className="w-5 h-5 text-[#002147]" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Horizontal Quick Nav Strip */}
+        <div className="md:hidden border-t border-[#D4AF37]/20 bg-[#FCFAF7]/95 px-3 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-1.5">
+          {navItems.map((item) => {
+            const IconComp = item.icon;
+            const isActive = activeSection === item.id;
+            return (
+              <button
+                key={`quick-${item.id}`}
+                onClick={() => scrollToSection(item.id)}
+                className={`whitespace-nowrap shrink-0 px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  isActive
+                    ? 'bg-[#002147] text-amber-200 border border-[#D4AF37] font-bold shadow-xs'
+                    : 'text-stone-600 bg-white/80 border border-stone-200/80 hover:text-[#002147]'
+                }`}
+              >
+                <IconComp className={`w-3 h-3 ${isActive ? 'text-[#D4AF37]' : 'text-stone-400'}`} />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Expandable Drawer Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="md:hidden bg-[#FCFAF7] border-t border-[#D4AF37]/40 shadow-2xl overflow-hidden"
+            >
+              <div className="p-4 space-y-3">
+                <div className="text-[10px] font-mono uppercase tracking-widest text-[#002147] font-bold flex items-center justify-between border-b border-stone-200 pb-2">
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    Passport Navigation Menu
+                  </span>
+                  <span className="text-stone-400 font-normal">VP-1025</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {navItems.map((item) => {
+                    const IconComp = item.icon;
+                    const isActive = activeSection === item.id;
+                    return (
+                      <button
+                        key={`drawer-${item.id}`}
+                        onClick={() => scrollToSection(item.id)}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer text-left ${
+                          isActive
+                            ? 'bg-[#002147] text-amber-100 border-2 border-[#D4AF37] font-bold shadow-md'
+                            : 'bg-white text-stone-700 border border-stone-200 hover:border-[#D4AF37]/60 hover:bg-amber-50/40 hover:text-[#002147]'
+                        }`}
+                      >
+                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                          isActive ? 'bg-white/10 text-[#D4AF37]' : 'bg-stone-100 text-stone-500'
+                        }`}>
+                          <IconComp className="w-4 h-4" />
+                        </div>
+                        <span className="truncate">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between text-[10px] font-mono text-stone-500">
+                  <span className="text-[#8B1E3F] font-bold tracking-wider">VENESSA &amp; PHILEMON</span>
+                  <span className="text-[#002147] font-bold">25 OCTOBER 2026</span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
+      {/* Backdrop for Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden fixed inset-0 bg-stone-900/40 backdrop-blur-xs z-35"
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Main Content Sections Wrapper */}
-      <main className="relative z-10 pt-16">
+      <main className="relative z-10 pt-26 md:pt-16">
         <Hero />
         <Countdown />
         <LocationMap />

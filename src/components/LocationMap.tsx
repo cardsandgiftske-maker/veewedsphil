@@ -133,7 +133,7 @@ export default function LocationMap() {
                     {venueInfo.venue}
                   </h3>
                   <p className="text-amber-300/90 text-xs tracking-wider uppercase font-sans font-medium">
-                    {activeVenue === 'ceremony' ? 'Nuptial Mass' : 'Reception & Feast'}
+                    {activeVenue === 'ceremony' ? 'Nuptial Service' : 'Reception & Feast'}
                   </p>
                 </div>
 

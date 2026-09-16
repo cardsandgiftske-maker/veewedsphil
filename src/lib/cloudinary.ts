@@ -38,8 +38,8 @@ export async function uploadToCloudinary(
     }
   }
 
-  const activeCloudName = (cloudName?.trim() || envCloudName || 'dphc0jlnr').trim();
-  const activePreset = (uploadPreset?.trim() || envPreset || 'wedding_photos').trim();
+  const activeCloudName = (cloudName?.trim() || envCloudName || 'b6onpcyk').trim();
+  const activePreset = (uploadPreset?.trim() || envPreset || 'veeandphil').trim();
 
   const formData = new FormData();
   formData.append('file', fileOrDataUrl);

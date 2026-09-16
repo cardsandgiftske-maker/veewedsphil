@@ -6,17 +6,20 @@ import Crest from './Crest';
 import VeeandPhilPhoto from "../assets/images/vee_phil_photo.jpg";
 
 export default function Hero() {
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#FCFAF7] text-stone-850 py-16" id="hero-section">
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#FCFAF7] text-stone-850 py-16"
+      id="hero-section"
+    >
       {/* Background Image with Theme Color Wash Overlays */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
-          src={VeePhilPhoto}
+          src={VeeandPhilPhoto}
           alt="Vee and Phil"
           className="w-full h-full object-cover object-center opacity-[0.16] scale-105 filter brightness-[1.02] contrast-[0.98]"
           referrerPolicy="no-referrer"
         />
+      </div>
         {/* Subtle theme color ambient glows */}
         <div className="absolute top-0 -left-20 w-96 h-96 bg-[#8B1E3F]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 -right-20 w-96 h-96 bg-[#002147]/10 rounded-full blur-3xl pointer-events-none" />

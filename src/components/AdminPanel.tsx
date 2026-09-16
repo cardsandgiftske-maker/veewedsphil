@@ -74,11 +74,12 @@ export default function AdminPanel() {
     if (guests.length === 0) return;
 
     // Construct CSV Header and Content
-    const headers = ['ID', 'Full Name', 'Phone Number', 'Will Attend', 'Seats Requested', 'Notes', 'Submitted At'];
+    const headers = ['ID', 'Full Name', 'Phone Number', 'Email', 'Will Attend', 'Seats Requested', 'Notes', 'Submitted At'];
     const rows = guests.map((g) => [
       g.id,
       `"${g.fullName.replace(/"/g, '""')}"`,
       `"${g.phoneNumber}"`,
+      `"${g.email || ''}"`,
       g.willAttend === 'yes' ? 'YES' : 'NO',
       g.adultsCount,
       `"${(g.notes || '').replace(/"/g, '""')}"`,
@@ -355,7 +356,10 @@ export default function AdminPanel() {
                                   })}
                                 </div>
                               </td>
-                              <td className="p-4 font-mono text-stone-600">{guest.phoneNumber}</td>
+                              <td className="p-4 font-mono text-stone-600">
+                                <div>{guest.phoneNumber}</div>
+                                {guest.email && <div className="text-[11px] text-stone-400 font-sans">{guest.email}</div>}
+                              </td>
                               <td className="p-4 text-center">
                                 <button
                                   onClick={() => handleToggleAttendance(guest.id)}

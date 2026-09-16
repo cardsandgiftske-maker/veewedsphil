@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Camera, Upload, Heart, Smartphone, Sparkles, Plus, Image as ImageIcon, X, ChevronLeft, ChevronRight, Pause, Play, Maximize2, Download, Cloud, Settings2, CheckCircle2 } from 'lucide-react';
+import { Camera, Upload, Heart, Smartphone, Sparkles, Plus, Image as ImageIcon, X, ChevronLeft, ChevronRight, Pause, Play, Maximize2, Download, Cloud, CheckCircle2 } from 'lucide-react';
 import { INITIAL_GALLERY } from '../data';
 import { GalleryPhoto } from '../types';
 import { saveGalleryPhoto, likeGalleryPhoto, subscribeToGalleryPhotos } from '../lib/firebase';
@@ -21,10 +21,9 @@ export default function Gallery() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState<GalleryPhoto | null>(null);
 
-  // Cloudinary credentials (defaults to env or user custom preset)
-  const [cloudName, setCloudName] = useState(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dphc0jlnr');
-  const [uploadPreset, setUploadPreset] = useState(import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'wedding_photos');
-  const [showCloudSettings, setShowCloudSettings] = useState(false);
+  // Cloudinary credentials with default presets
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'b6onpcyk';
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'veeandphil';
 
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -181,7 +180,7 @@ export default function Gallery() {
     } catch (err: any) {
       console.error('Failed to upload photo to Cloudinary:', err);
       setIsUploading(false);
-      setUploadError(err?.message || 'Failed to upload photo to Cloudinary. Please verify your Cloud Name and Upload Preset.');
+      setUploadError(err?.message || 'Failed to upload photo. Please try again.');
     }
   };
 
@@ -536,43 +535,6 @@ export default function Gallery() {
                     onChange={(e) => setCaption(e.target.value)}
                     className="w-full border border-stone-200 rounded-xl px-4 py-2.5 text-sm text-stone-800 outline-none focus:border-maroon-700"
                   />
-                </div>
-
-                {/* Cloudinary Settings Drawer Toggle */}
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setShowCloudSettings(!showCloudSettings)}
-                    className="text-[11px] text-stone-500 hover:text-stone-800 font-sans flex items-center gap-1 cursor-pointer"
-                  >
-                    <Settings2 className="w-3.5 h-3.5" />
-                    <span>{showCloudSettings ? 'Hide Cloudinary Settings' : 'Cloudinary Config (Optional)'}</span>
-                  </button>
-
-                  {showCloudSettings && (
-                    <div className="mt-2 p-3 bg-stone-50 border border-stone-200 rounded-2xl space-y-2 text-xs">
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-stone-500 block mb-0.5">Cloud Name</label>
-                        <input
-                          type="text"
-                          value={cloudName}
-                          onChange={(e) => setCloudName(e.target.value)}
-                          placeholder="e.g. my-cloud-name"
-                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs text-stone-800"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-stone-500 block mb-0.5">Unsigned Upload Preset</label>
-                        <input
-                          type="text"
-                          value={uploadPreset}
-                          onChange={(e) => setUploadPreset(e.target.value)}
-                          placeholder="e.g. wedding_photos"
-                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs text-stone-800"
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <button

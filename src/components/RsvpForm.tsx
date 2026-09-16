@@ -51,14 +51,12 @@ export default function RsvpForm() {
       setErrorMessage('Please enter your phone number.');
       return;
     }
-    if (!email.trim()) {
-      setErrorMessage('Please enter your email address to receive your Digital Pass.');
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      setErrorMessage('Please enter a valid email address.');
-      return;
+    if (email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        setErrorMessage('Please enter a valid email address.');
+        return;
+      }
     }
 
     setLoading(true);
@@ -191,16 +189,18 @@ export default function RsvpForm() {
                   />
                 </div>
 
-                {/* Email Address input for Digital Pass */}
+                {/* Email Address input for Digital Pass (Optional) */}
                 <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-widest text-stone-500 font-sans font-bold flex items-center gap-1">
-                    <Mail className="w-3.5 h-3.5 text-stone-400" />
-                    <span>Email Address <span className="text-rose-600">*</span></span>
+                  <label className="text-xs uppercase tracking-widest text-stone-500 font-sans font-bold flex items-center justify-between">
+                    <span className="flex items-center gap-1">
+                      <Mail className="w-3.5 h-3.5 text-stone-400" />
+                      <span>Email Address</span>
+                    </span>
+                    <span className="text-[10px] text-stone-400 font-normal lowercase tracking-normal">(optional)</span>
                   </label>
                   <input
                     type="email"
-                    required
-                    placeholder="e.g. guest@example.com"
+                    placeholder="e.g. guest@example.com (optional)"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-stone-50/50 border border-stone-200 focus:border-[#002147] focus:ring-1 focus:ring-[#002147]/20 rounded-xl px-4 py-3 text-sm text-stone-800 outline-none transition-all"

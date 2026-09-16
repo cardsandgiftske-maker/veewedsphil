@@ -10,11 +10,11 @@ async function getCloudinaryCouplePhotoUrl(baseUrl: string): Promise<string> {
     return cachedCloudinaryCouplePhotoUrl;
   }
 
-  const fallbackUrl = `${baseUrl.replace(/\/$/, '')}/src/assets/images/carol_and_john_portrait_1784461506194.jpg`;
+  const fallbackUrl = `${baseUrl.replace(/\/$/, '')}/src/assets/images/vee_phil_photo.jpg`;
 
   try {
     let dataUrl: string | null = null;
-    const localPath = path.join(process.cwd(), 'src/assets/images/carol_and_john_portrait_1784461506194.jpg');
+    const localPath = path.join(process.cwd(), 'src/assets/images/vee_phil_photo.jpg');
 
     if (fs.existsSync(localPath)) {
       const fileBuffer = fs.readFileSync(localPath);

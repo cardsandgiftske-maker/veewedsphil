@@ -151,7 +151,7 @@ export default function LocationMap() {
                     <div>
                       <p className="text-xs text-stone-400 uppercase tracking-widest font-sans font-bold">Timeline</p>
                       <p className="text-sm text-stone-200 mt-0.5">
-                        {activeVenue === 'ceremony' ? '9:15 AM Guest Arrival | 10:00 AM Nuptial Mass' : '1:00 PM Reception Arrival | 2:00 PM Feast & Celebration'}
+                        {activeVenue === 'ceremony' ? '9:15 AM Guest Arrival | 10:00 AM Nuptial Service' : '1:00 PM Reception Arrival | 2:00 PM Feast & Celebration'}
                       </p>
                     </div>
                   </div>

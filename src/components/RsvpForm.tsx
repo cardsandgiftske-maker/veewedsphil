@@ -62,17 +62,16 @@ export default function RsvpForm() {
     setLoading(true);
 
     try {
-      const newGuest: RsvpGuest = {
-        id: 'rsvp-' + Date.now(),
-        fullName: fullName.trim(),
-        phoneNumber: phoneNumber.trim(),
-        email: email.trim() || undefined,
-        willAttend,
-        adultsCount: willAttend === 'yes' ? adultsCount : 0,
-        submittedAt: new Date().toISOString(),
-        notes: notes.trim() || undefined,
-      };
-
+     const newGuest: RsvpGuest = {
+  id: 'rsvp-' + Date.now(),
+  fullName: fullName.trim(),
+  phoneNumber: phoneNumber.trim(),
+  email: email.trim() || '',
+  willAttend,
+  adultsCount: willAttend === 'yes' ? adultsCount : 0,
+  submittedAt: new Date().toISOString(),
+  notes: notes.trim() || '',
+};
       await saveRsvp(newGuest);
 
       // Attempt sending confirmation email if email is provided

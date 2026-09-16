@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, MapPin, Shirt, Sparkles, Mail, Camera, ChevronUp, Clock } from 'lucide-react';
+import { Calendar, MapPin, Shirt, Sparkles, Mail, Camera, ChevronUp, Clock, Gift } from 'lucide-react';
 import Hero from './components/Hero';
 import Countdown from './components/Countdown';
 import Program from './components/Program';
 import DressCode from './components/DressCode';
 import LocationMap from './components/LocationMap';
 import Gallery from './components/Gallery';
+import Gifts from './components/Gifts';
 import RsvpForm from './components/RsvpForm';
 import AdminPanel from './components/AdminPanel';
 import Envelope from './components/Envelope';
@@ -41,7 +42,7 @@ export default function App() {
         setShowScrollTop(false);
       }
 
-      const sections = ['hero-section', 'countdown-section', 'maps-section', 'program-section', 'dress-code-section', 'gallery-section', 'rsvp-section'];
+      const sections = ['hero-section', 'countdown-section', 'maps-section', 'program-section', 'dress-code-section', 'gallery-section', 'gifting-section', 'rsvp-section'];
       const scrollPosition = window.scrollY + window.innerHeight * 0.4;
 
       for (const sectionId of sections) {
@@ -75,6 +76,7 @@ export default function App() {
     { id: 'program-section', label: 'Program', icon: Calendar },
     { id: 'dress-code-section', label: 'Dress Code', icon: Shirt },
     { id: 'gallery-section', label: 'Gallery', icon: Camera },
+    { id: 'gifting-section', label: 'Gifting', icon: Gift },
     { id: 'rsvp-section', label: 'RSVP', icon: Mail },
   ];
 
@@ -160,6 +162,7 @@ export default function App() {
         <Program />
         <DressCode />
         <Gallery />
+        <Gifts />
         <RsvpForm />
       </main>
 

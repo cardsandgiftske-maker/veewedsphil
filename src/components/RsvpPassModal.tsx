@@ -16,7 +16,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { RsvpGuest } from '../types';
-import couplePhoto from './public/vee_phil_photo.jpg';
+import couplePhoto from '.public/vee_phil_photo.jpg';
 
 interface RsvpPassModalProps {
   guest: RsvpGuest;

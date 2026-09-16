@@ -11,7 +11,7 @@ export default function Hero() {
       {/* Background Image with Theme Color Wash Overlays */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
-          src="/src/assets/images/carol_and_john_portrait_1784461506194.jpg"
+          src="/src/assets/images/vee_phil_photo.jpg"
           alt="Venessa and Philemon Portrait"
           className="w-full h-full object-cover object-center opacity-[0.16] scale-105 filter brightness-[1.02] contrast-[0.98]"
           referrerPolicy="no-referrer"

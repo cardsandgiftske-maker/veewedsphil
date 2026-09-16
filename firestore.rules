@@ -1,10 +1,16 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /rsvps/{document} {
+    match /rsvps/{rsvpId} {
       allow read, write: if true;
     }
-    match /gallery/{document} {
+    match /rsvps/{document=**} {
+      allow read, write: if true;
+    }
+    match /gallery/{photoId} {
+      allow read, write: if true;
+    }
+    match /gallery/{document=**} {
       allow read, write: if true;
     }
   }
